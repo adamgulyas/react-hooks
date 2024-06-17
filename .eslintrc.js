@@ -17,6 +17,9 @@ module.exports = {
     },
   },
   rules: {
+    'react/prop-types': 'off',
+    'no-unused-vars': 'off',
+    'react/no-unescaped-entities': 'off',
     // semi: ['warn', 'always'],
   },
   settings: {
