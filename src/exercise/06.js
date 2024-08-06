@@ -6,10 +6,12 @@ import * as React from 'react'
 // fetchPokemon: the function we call to get the pokemon info
 // PokemonInfoFallback: the thing we show while we're loading the pokemon info
 // PokemonDataView: the stuff we use to display the pokemon info
+
 import {
   PokemonForm,
   PokemonInfoFallback,
   PokemonDataView,
+  PokemonErrorBoundary,
   fetchPokemon,
 } from '../pokemon'
 
@@ -27,12 +29,14 @@ function PokemonInfo({pokemonName}) {
     // (This is to enable the loading state when switching between different pokemon.)
     setPokemon(null)
     // 💰 Use the `fetchPokemon` function to fetch a pokemon by its name:
-    fetchPokemon(pokemonName).then(pokemonData => {
-      setPokemon(pokemonData)
-    })
+    console.log(pokemonName)
+    fetchPokemon(pokemonName).then(
+      pokemonData => setPokemon(pokemonData),
+      error => PokemonErrorBoundary(error),
+    )
 
     // 💰 DON'T FORGET THE DEPENDENCIES ARRAY!
-  }, [pokemon])
+  }, [pokemonName])
 
   // 🐨 return the following things based on the `pokemon` state and `pokemonName` prop:
   //   1. no pokemonName: 'Submit a pokemon'
@@ -40,7 +44,7 @@ function PokemonInfo({pokemonName}) {
   //   3. pokemon: <PokemonDataView pokemon={pokemon} />
   if (!pokemonName) {
     return 'Submit a pokemon'
-  } else if (pokemonName && !pokemon) {
+  } else if (!pokemon) {
     return <PokemonInfoFallback name={pokemonName} />
   } else {
     return <PokemonDataView pokemon={pokemon} />
